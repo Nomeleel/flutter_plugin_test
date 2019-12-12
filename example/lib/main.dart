@@ -13,11 +13,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
+  List<String> installedPackageNameList;
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
+    installedPackageNameList = List<String>();
   }
 
   // Platform messages are asynchronous, so we initialize in an async method.
@@ -47,12 +49,18 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: ListView.builder(
+          itemCount: installedPackageNameList.length,
+          itemBuilder: (context, index) {
+            return Text(installedPackageNameList[index]);
+          }
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            await FlutterPluginTest.callApp("com.android.chrome");
+            var list = await FlutterPluginTest.installedPackageNameList();
+            setState(() {
+              installedPackageNameList = list;
+            });
           },
         ),
       ),

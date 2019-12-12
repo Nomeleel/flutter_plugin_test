@@ -17,4 +17,9 @@ class FlutterPluginTest {
     return result;
   }
 
+  static Future<List<String>> installedPackageNameList() async {
+    final List<String> result = await _channel.invokeListMethod('installedPackageNameList');
+    return result;
+  }
+
 }
